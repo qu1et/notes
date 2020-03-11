@@ -7,6 +7,30 @@ const listNotes = () => {
     notes.forEach(note => console.log(note.title));
 }
 
+const removeNote = title => {
+    const notes = loadNotes();
+    const filteredNotes = notes.filter(note => note.title !== title);
+
+    if (notes.length !== filteredNotes.length) {
+        saveNotes(filteredNotes);
+        console.log(chalk.green.inverse('Note removed!'));
+    } else {
+        console.log(chalk.red.inverse('No note found!'));
+    }
+}
+
+const readNote = title => {
+    const notes = loadNotes();
+    const note = notes.find(note => note.title === title);
+
+    if (note) {
+        console.log(chalk.cyan.inverse(`${note.title}\n`) 
+                    + note.body);
+    } else {
+        console.log(chalk.red.inverse('Note not found!'));
+    }
+}
+
 const addNote = (title, body) => {
     const notes = loadNotes();
     const duplicateNote = notes.find(note => note.title === title);
@@ -38,20 +62,9 @@ const loadNotes = () => {
     }    
 }
 
-const removeNote = title => {
-    const notes = loadNotes();
-    const filteredNotes = notes.filter(note => note.title !== title);
-
-    if (notes.length !== filteredNotes.length) {
-        saveNotes(filteredNotes);
-        console.log(chalk.green.inverse('Note removed!'));
-    } else {
-        console.log(chalk.red.inverse('No note found!'));
-    }
-}
-
 module.exports = {
     listNotes: listNotes,
     addNote: addNote,
     removeNote: removeNote,
+    readNote: readNote
 };
